@@ -8,9 +8,37 @@
 import SwiftUI
 
 struct ContentView: View {
+    let dishes = Dish.all()
+    @State private var isSpicy = false
     var body: some View {
-        Text("Hello, world!")
+        VStack {
+            Toggle(isOn: $isSpicy) {
+                Text("Is Spicy")
+                    .font(.title)
+                    .bold()
+                    .foregroundColor(Color.secondary)
+            }
             .padding()
+            List(dishes.filter({$0.isSpicy == isSpicy}), id: \.id) { dish in
+                Image(dish.imageURL)
+                    .resizable()
+                    .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                Text(dish.name)
+                    .font(.title)
+                Spacer()
+                if dish.isSpicy {
+                    Image("spicy-icon")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                }
+            }
+            Button("Press To Switch") {
+                isSpicy.toggle()
+            }
+            .padding()
+            .foregroundColor(.white)
+            .background(Color.blue)
+        }
     }
 }
 
